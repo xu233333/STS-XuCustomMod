@@ -1,0 +1,10 @@
+{
+  "modid": "XuCustomMod",
+  "name": "XuHaoNam Custom Mod",
+  "author_list": ["XuHaoNan"],
+  "description": "XuHaoNam Custom Mod",
+  "version": "1.0.0",
+  "sts_version": "12-18-2022",
+  "mts_version": "3.30.0",
+  "dependencies": ["basemod", "stslib"]
+}

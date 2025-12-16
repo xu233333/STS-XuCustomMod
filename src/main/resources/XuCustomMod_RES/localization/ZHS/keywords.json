@@ -1,0 +1,16 @@
+{
+  "Game Dictionary": {
+    "RelicEnabled": {
+      "NAMES": [
+        "RelicEnabled"
+      ],
+      "DESCRIPTION": "当前状态: #g开启。"
+    },
+    "RelicDisabled": {
+      "NAMES": [
+        "RelicDisabled"
+      ],
+      "DESCRIPTION": "当前状态: #r关闭。"
+    }
+  }
+}
