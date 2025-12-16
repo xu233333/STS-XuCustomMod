@@ -1,8 +1,10 @@
 package XuCustomMod.Relic;
 
 import XuCustomMod.Config.CommonConfig;
+import XuCustomMod.Utils.ActionRegistries;
 import XuCustomMod.Utils.ImageCategoryEnum;
 import XuCustomMod.Utils.JsonUtils;
+import XuCustomMod.Utils.LeveledAction;
 import XuCustomMod.XuCustomMod;
 import basemod.Pair;
 import basemod.abstracts.CustomRelic;
@@ -11,45 +13,48 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
-import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
-import com.megacrit.cardcrawl.actions.defect.IncreaseMaxOrbAction;
-import com.megacrit.cardcrawl.actions.utility.UseCardAction;
-import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
-import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import com.megacrit.cardcrawl.powers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.vfx.ThoughtBubble;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
     public static final String IN_MOD_ID = "GodLike";
     public static final String ID = XuCustomMod.makePath(IN_MOD_ID);
 
-    public int StrengthLevel = 50;
-    public int StrengthLevelPerTurn = 10;
-    public int DexterityLevel = 50;
-    public int DexterityLevelPerTurn = 10;
-    public int FocusLevel = 25;
-    public int FocusLevelPerTurn = 5;
-    public int ArtifactLevel = 20;
-    public int ThornsLevel = 10;
-    public int PlatedArmorLevel = 200;
-    public int BufferLevelLite = 10;
-    public int BufferLevelFullExtra = 40;
-    public int MetallicizeLevel = 50;
-    public int RegenLevelLite = 10;
-    public int RegenLevelFullExtra = 40;
-    public int EnvenomLevel = 10;
-    public int RuptureLevel = 10;
-    public int AfterImageLevel = 10;
-    public int RitualPowerLevelLite = 2;
-    public int RitualPowerLevelFullExtra = 6;
-    public int RitualPowerLevelPerTurn = 1;
+    public static final LeveledAction[] BatterStartPowers = {
+            new LeveledAction(ActionRegistries.P_StrengthPower, false, false, 0, 50, 0),
+            new LeveledAction(ActionRegistries.P_DexterityPower, false, false, 0, 50, 0),
+            new LeveledAction(ActionRegistries.P_FocusPower, false, false, 0, 25, 0),
+            new LeveledAction(ActionRegistries.P_ArtifactPower, false, false, 0, 20, 20),
+            new LeveledAction(ActionRegistries.P_BarricadePower, false, false, 0, 1, 1),
+            new LeveledAction(ActionRegistries.P_ThornsPower, false, false, 0, 10, 0),
+            new LeveledAction(ActionRegistries.P_PlatedArmorPower, false, false, 0, 200, 0),
+            new LeveledAction(ActionRegistries.P_BufferPower, false, false, 0, 50, 10),
+            new LeveledAction(ActionRegistries.P_MetallicizePower, false, false, 0, 50, 0),
+            new LeveledAction(ActionRegistries.P_RegenPower, false, false, 0, 50, 10),
+            new LeveledAction(ActionRegistries.P_EnvenomPower, false, false, 0, 10, 0),
+            new LeveledAction(ActionRegistries.P_RupturePower, false, false, 0, 10, 0),
+            new LeveledAction(ActionRegistries.P_AfterImagePower, false, false, 0, 10, 0),
+            new LeveledAction(ActionRegistries.P_RitualPower, false, false, 0, 8, 0),
+            new LeveledAction(ActionRegistries.GainEnergyAction, false, false, 0, 10, 10),
+    };
+
+    public static final LeveledAction[] TurnStartPowers = {
+            new LeveledAction(ActionRegistries.P_StrengthPower, true, false, 0, 10, 0),
+            new LeveledAction(ActionRegistries.P_DexterityPower, true, false,0, 10, 0),
+            new LeveledAction(ActionRegistries.P_FocusPower, true, false,0, 5, 0),
+            new LeveledAction(ActionRegistries.P_RitualPower, false, false, 0, 1, 1),
+            new LeveledAction(ActionRegistries.GainEnergyAction, false, false, 0, 10, 10),
+            new LeveledAction(ActionRegistries.IncreaseMaxOrbActionWhenPlayerHasOrb, false, false, 0, 10, 10)
+    };
+
+    private final Consumer<AbstractGameAction> applyAction = this::addToBot;
 
     public int MinOrbCount = 10;
     public int StartOrbCount = 10;
@@ -74,33 +79,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
         }
         this.ThisBattleEnable = true;
         try {
-            // Lite
-            this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new ArtifactPower(AbstractDungeon.player, ArtifactLevel), ArtifactLevel));  // 人工制品
-            this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new BarricadePower(AbstractDungeon.player), 1));  // 壁垒
-            this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, RegenLevelLite), RegenLevelLite));  // 再生
-            this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new BufferPower(AbstractDungeon.player, BufferLevelLite), BufferLevelLite));  // 缓冲
-            this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RitualPower(AbstractDungeon.player, RitualPowerLevelLite, true), RitualPowerLevelLite));  // 仪式
-            this.addToBot(new GainEnergyAction(10));
-
-            // Full
-            if (this.EnableLevel == 1) {
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new StrengthPower(AbstractDungeon.player, StrengthLevel), StrengthLevel));  // 力量
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new DexterityPower(AbstractDungeon.player, DexterityLevel), DexterityLevel));  // 敏捷
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new FocusPower(AbstractDungeon.player, FocusLevel), FocusLevel));  // 集中
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new ThornsPower(AbstractDungeon.player, ThornsLevel), ThornsLevel));  // 荆棘
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new PlatedArmorPower(AbstractDungeon.player, PlatedArmorLevel), PlatedArmorLevel));  // 多层护甲
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new MetallicizePower(AbstractDungeon.player, MetallicizeLevel), MetallicizeLevel));  // 金属化
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RegenPower(AbstractDungeon.player, RegenLevelFullExtra), RegenLevelFullExtra));  // 再生
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new BufferPower(AbstractDungeon.player, BufferLevelFullExtra), BufferLevelFullExtra));  // 缓冲
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new EnvenomPower(AbstractDungeon.player, EnvenomLevel), EnvenomLevel));  // 涂毒
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RupturePower(AbstractDungeon.player, RuptureLevel), RuptureLevel));  // 撕裂
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new AfterImagePower(AbstractDungeon.player, AfterImageLevel), AfterImageLevel));  // 余像
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RitualPower(AbstractDungeon.player, RitualPowerLevelFullExtra, true), RitualPowerLevelFullExtra));  // 仪式
-
-                if (AbstractDungeon.player.maxOrbs > 0) {
-                    this.addToBot(new IncreaseMaxOrbAction(StartOrbCount));
-                }
-            }
+            LeveledAction.applyAll(applyAction, this.EnableLevel, BatterStartPowers);
         } catch (Exception e) {
             XuCustomMod.LOGGER.info("Relic_GodLike ApplyBattleStartEffect Error: {}", e.getMessage());
         }
@@ -112,39 +91,9 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
         }
         this.ThisTurnEnable = true;
         try {
-            // Lite
-            this.addToBot(new GainEnergyAction(10));
-            this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RitualPower(AbstractDungeon.player, RitualPowerLevelPerTurn, true), RitualPowerLevelPerTurn));  // 仪式
-
-            // Full
-            if (this.EnableLevel == 1) {
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new StrengthPower(AbstractDungeon.player, StrengthLevelPerTurn), StrengthLevelPerTurn));
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new DexterityPower(AbstractDungeon.player, DexterityLevelPerTurn), DexterityLevelPerTurn));
-                this.addToBot(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new FocusPower(AbstractDungeon.player, FocusLevelPerTurn), FocusLevelPerTurn));
-                this.setMaxOrbCount(MinOrbCount);
-            }
+            LeveledAction.applyAll(applyAction, this.EnableLevel, TurnStartPowers);
         } catch (Exception e) {
             XuCustomMod.LOGGER.info("Relic_GodLike ApplyTurnStartEffect Error: {}", e.getMessage());
-        }
-    }
-
-    private void setMaxOrbCount(int count) {
-        if (AbstractDungeon.player.maxOrbs > 0) {
-            this.addToBot(new IncreaseMaxOrbAction(count - AbstractDungeon.player.maxOrbs));
-        }
-    }
-
-    @Override
-    public void onUseCard(AbstractCard targetCard, UseCardAction useCardAction) {
-        if (this.IsEnable) {
-            this.setMaxOrbCount(MinOrbCount);
-        }
-    }
-
-    @Override
-    public void onPlayCard(AbstractCard c, AbstractMonster m) {
-        if (this.IsEnable) {
-            this.setMaxOrbCount(MinOrbCount);
         }
     }
 
