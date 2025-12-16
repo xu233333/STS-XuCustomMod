@@ -46,9 +46,9 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
     };
 
     public static final LeveledAction[] TurnStartPowers = {
-            new LeveledAction(ActionRegistries.P_StrengthPower, true, false, 0, 10, 0),
-            new LeveledAction(ActionRegistries.P_DexterityPower, true, false,0, 10, 0),
-            new LeveledAction(ActionRegistries.P_FocusPower, true, false,0, 5, 0),
+            new LeveledAction(ActionRegistries.P_StrengthPower, false, false, 0, 10, 0),
+            new LeveledAction(ActionRegistries.P_DexterityPower, false, false,0, 10, 0),
+            new LeveledAction(ActionRegistries.P_FocusPower, false, false,0, 5, 0),
             new LeveledAction(ActionRegistries.P_RitualPower, false, false, 0, 1, 1),
             new LeveledAction(ActionRegistries.GainEnergyAction, false, false, 0, 10, 10),
             new LeveledAction(ActionRegistries.IncreaseMaxOrbActionWhenPlayerHasOrb, false, false, 0, 10, 10)

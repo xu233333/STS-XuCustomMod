@@ -14,9 +14,7 @@ public class LeveledAction {
     public LeveledAction(Function<Integer, AbstractGameAction> action, boolean UseAddMode, boolean AllowZeroToApply, int... actionLevels) {
         this.action = action;
         this.AllowZeroToApply = AllowZeroToApply;
-        if (!UseAddMode) {
-            this.actionLevels = actionLevels;
-        } else {
+        if (UseAddMode) {
             this.actionLevels = new int[actionLevels.length];
             if (actionLevels.length != 0) {
                 this.actionLevels[0] = actionLevels[0];
@@ -24,6 +22,8 @@ public class LeveledAction {
                     this.actionLevels[i] = this.actionLevels[i - 1] + actionLevels[i];
                 }
             }
+        } else {
+            this.actionLevels = actionLevels;
         }
     }
 
@@ -35,7 +35,7 @@ public class LeveledAction {
         return this.actionLevels[level];
     }
 
-    public AbstractGameAction apply(int level) {
+    public AbstractGameAction getAction(int level) {
         if (this.action == null) {
             return null;
         } else {
@@ -49,7 +49,7 @@ public class LeveledAction {
 
     public static void applyAll(Consumer<AbstractGameAction> actionConsumer, int level, LeveledAction... leveledActions) {
         for (LeveledAction leveledAction : leveledActions) {
-            AbstractGameAction action = leveledAction.apply(level);
+            AbstractGameAction action = leveledAction.getAction(level);
             if (action != null) {
                 actionConsumer.accept(action);
             }
