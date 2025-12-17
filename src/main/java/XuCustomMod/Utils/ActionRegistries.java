@@ -41,15 +41,18 @@ public class ActionRegistries {
     public static <T extends AbstractPower> Function<Integer, AbstractGameAction> createApplyPowerAction(Class<T> powerClass, Object... args) {
         Constructor<?> constructor = powerClass.getDeclaredConstructors()[0];
         return (level) -> {
+            Object[] newArgs = new Object[args.length];
             for (int argIndex = 0; argIndex < args.length; argIndex++)  {
                 if (args[argIndex] instanceof UTILS_PowerPlayerPlaceHolder) {
-                    args[argIndex] = AbstractDungeon.player;
+                    newArgs[argIndex] = AbstractDungeon.player;
                 } else if (args[argIndex] instanceof UTILS_PowerLevelPlaceHolder) {
-                    args[argIndex] = level;
+                    newArgs[argIndex] = level;
+                } else {
+                    newArgs[argIndex] = args[argIndex];
                 }
             }
             try {
-                AbstractPower power = (AbstractPower) constructor.newInstance(args);
+                AbstractPower power = (AbstractPower) constructor.newInstance(newArgs);
                 return new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, power, level);
             } catch (Exception e) {
                 XuCustomMod.LOGGER.error("Failed to create power: {}", powerClass.getName());
