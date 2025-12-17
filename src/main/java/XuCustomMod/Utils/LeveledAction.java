@@ -1,17 +1,18 @@
 package XuCustomMod.Utils;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class LeveledAction {
-    public Function<Integer, AbstractGameAction> action;
+    public BiFunction<AbstractCreature, Integer, AbstractGameAction> action;
 
     public final int[] actionLevels;
     public final boolean AllowZeroToApply;
 
-    public LeveledAction(Function<Integer, AbstractGameAction> action, boolean UseAddMode, boolean AllowZeroToApply, int... actionLevels) {
+    public LeveledAction(BiFunction<AbstractCreature, Integer, AbstractGameAction> action, boolean UseAddMode, boolean AllowZeroToApply, int... actionLevels) {
         this.action = action;
         this.AllowZeroToApply = AllowZeroToApply;
         if (UseAddMode) {
@@ -35,21 +36,21 @@ public class LeveledAction {
         return this.actionLevels[level];
     }
 
-    public AbstractGameAction getAction(int level) {
+    public AbstractGameAction getAction(AbstractCreature target, int level) {
         if (this.action == null) {
             return null;
         } else {
             int currentLevel = getActionCurrentLevel(level);
             if (this.AllowZeroToApply || currentLevel != 0) {
-                return this.action.apply(currentLevel);
+                return this.action.apply(target, currentLevel);
             }
         }
         return null;
     }
 
-    public static void applyAll(Consumer<AbstractGameAction> actionConsumer, int level, LeveledAction... leveledActions) {
+    public static void applyAll(Consumer<AbstractGameAction> actionConsumer, AbstractCreature target, int level, LeveledAction... leveledActions) {
         for (LeveledAction leveledAction : leveledActions) {
-            AbstractGameAction action = leveledAction.getAction(level);
+            AbstractGameAction action = leveledAction.getAction(target, level);
             if (action != null) {
                 actionConsumer.accept(action);
             }

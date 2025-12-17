@@ -79,7 +79,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
         }
         this.ThisBattleEnable = true;
         try {
-            LeveledAction.applyAll(applyAction, this.EnableLevel, BatterStartPowers);
+            LeveledAction.applyAll(applyAction, AbstractDungeon.player, this.EnableLevel, BatterStartPowers);
         } catch (Exception e) {
             XuCustomMod.LOGGER.info("Relic_GodLike ApplyBattleStartEffect Error: {}", e.getMessage());
         }
@@ -91,7 +91,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
         }
         this.ThisTurnEnable = true;
         try {
-            LeveledAction.applyAll(applyAction, this.EnableLevel, TurnStartPowers);
+            LeveledAction.applyAll(applyAction, AbstractDungeon.player, this.EnableLevel, TurnStartPowers);
         } catch (Exception e) {
             XuCustomMod.LOGGER.info("Relic_GodLike ApplyTurnStartEffect Error: {}", e.getMessage());
         }
