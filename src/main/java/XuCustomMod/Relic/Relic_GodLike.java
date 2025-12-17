@@ -97,6 +97,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
         }
     }
 
+    /* 有Bug // "你获得永久 #b5 点 [E] 。",
     @Override
     public void onEquip() {
         AbstractDungeon.player.energy.energyMaster += ExtraEnergy;
@@ -106,6 +107,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
     public void onUnequip() {
         AbstractDungeon.player.energy.energyMaster -= ExtraEnergy;
     }
+     */
 
     
     @Override
