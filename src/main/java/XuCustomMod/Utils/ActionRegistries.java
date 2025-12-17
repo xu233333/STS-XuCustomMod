@@ -3,7 +3,9 @@ package XuCustomMod.Utils;
 import XuCustomMod.XuCustomMod;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
+import com.megacrit.cardcrawl.actions.common.HealAction;
 import com.megacrit.cardcrawl.actions.defect.IncreaseMaxOrbAction;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -35,6 +37,21 @@ public class ActionRegistries {
         if (AbstractDungeon.player.maxOrbs > 0) {
             int playerNowOrbs = AbstractDungeon.player.maxOrbs;
             return new IncreaseMaxOrbAction(level - playerNowOrbs);
+        }
+        return null;
+    };
+    public static final BiFunction<AbstractCreature, Integer, AbstractGameAction> GainBlockAction = GainBlockAction::new;
+    public static final BiFunction<AbstractCreature, Integer, AbstractGameAction> HealAction = (target, level) -> new HealAction(target, target, level);
+    public static final BiFunction<AbstractCreature, Integer, AbstractGameAction> HealPercentAction = (target, level) -> {
+        int HPMax = target.maxHealth;
+        return new HealAction(target, target, (int) (HPMax * (level / 100.0f)));
+    };
+    public static final BiFunction<AbstractCreature, Integer, AbstractGameAction> HealToPercentAction = (target, level) -> {
+        int HPMax = target.maxHealth;
+        int TargetHP = HPMax * (level / 100);
+        int NowHP = target.currentHealth;
+        if (NowHP < TargetHP) {
+            return new HealAction(target, target, TargetHP - NowHP);
         }
         return null;
     };
