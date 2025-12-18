@@ -27,7 +27,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
     public static final String IN_MOD_ID = "GodLike";
     public static final String ID = XuCustomMod.makePath(IN_MOD_ID);
 
-    public static final LeveledAction[] BatterStartPowers = {
+    public static final LeveledAction[] BattleStartPowers = {
             new LeveledAction(ActionRegistries.P_StrengthPower, false, false, 0, 50, 0),
             new LeveledAction(ActionRegistries.P_DexterityPower, false, false, 0, 50, 0),
             new LeveledAction(ActionRegistries.P_FocusPower, false, false, 0, 25, 0),
@@ -43,6 +43,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
             new LeveledAction(ActionRegistries.P_AfterImagePower, false, false, 0, 10, 0),
             new LeveledAction(ActionRegistries.P_RitualPower, false, false, 0, 8, 2),
             new LeveledAction(ActionRegistries.P_LiveForeverPower, false, false, 0, 8, 2),
+            new LeveledAction(ActionRegistries.P_MalleablePower, false, false, 0, 40, 10),
             new LeveledAction(ActionRegistries.GainEnergyAction, false, false, 0, 10, 10),
     };
 
@@ -81,7 +82,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
         }
         this.ThisBattleEnable = true;
         try {
-            LeveledAction.applyAll(applyAction, AbstractDungeon.player, this.EnableLevel, BatterStartPowers);
+            LeveledAction.applyAll(applyAction, AbstractDungeon.player, this.EnableLevel, BattleStartPowers);
         } catch (Exception e) {
             XuCustomMod.LOGGER.info("Relic_GodLike ApplyBattleStartEffect Error: {}", e.getMessage());
         }
