@@ -34,14 +34,15 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
             new LeveledAction(ActionRegistries.P_ArtifactPower, false, false, 0, 20, 20),
             new LeveledAction(ActionRegistries.P_BarricadePower, false, false, 0, 1, 1),
             new LeveledAction(ActionRegistries.P_ThornsPower, false, false, 0, 10, 0),
-            new LeveledAction(ActionRegistries.P_PlatedArmorPower, false, false, 0, 200, 0),
+            new LeveledAction(ActionRegistries.P_PlatedArmorPower, false, false, 0, 200, 40),
             new LeveledAction(ActionRegistries.P_BufferPower, false, false, 0, 50, 10),
             new LeveledAction(ActionRegistries.P_MetallicizePower, false, false, 0, 50, 0),
             new LeveledAction(ActionRegistries.P_RegenPower, false, false, 0, 50, 10),
             new LeveledAction(ActionRegistries.P_EnvenomPower, false, false, 0, 10, 0),
             new LeveledAction(ActionRegistries.P_RupturePower, false, false, 0, 10, 0),
             new LeveledAction(ActionRegistries.P_AfterImagePower, false, false, 0, 10, 0),
-            new LeveledAction(ActionRegistries.P_RitualPower, false, false, 0, 8, 0),
+            new LeveledAction(ActionRegistries.P_RitualPower, false, false, 0, 8, 2),
+            new LeveledAction(ActionRegistries.P_LiveForeverPower, false, false, 0, 8, 2),
             new LeveledAction(ActionRegistries.GainEnergyAction, false, false, 0, 10, 10),
     };
 
@@ -50,6 +51,7 @@ public class Relic_GodLike extends CustomRelic implements CustomSavableRaw {
             new LeveledAction(ActionRegistries.P_DexterityPower, false, false,0, 10, 0),
             new LeveledAction(ActionRegistries.P_FocusPower, false, false,0, 5, 0),
             new LeveledAction(ActionRegistries.P_RitualPower, false, false, 0, 1, 1),
+            new LeveledAction(ActionRegistries.P_LiveForeverPower, false, false, 0, 1, 1),
             new LeveledAction(ActionRegistries.GainEnergyAction, false, false, 0, 10, 10),
             new LeveledAction(ActionRegistries.IncreaseMaxOrbActionWhenPlayerHasOrb, false, false, 0, 10, 10)
     };
